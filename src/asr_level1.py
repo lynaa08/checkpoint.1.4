@@ -41,8 +41,7 @@ print(f"Trimmed silence: {trimmed_text}")
 print(f"WER: {get_wer(GROUND_TRUTH, trimmed_text):.1f}%\n")
 
 # --- noise reduction ---
-noise_sample = audio_16k[:int(16000 * 0.5)]  # first 0.5s as noise profile
-audio_denoised = nr.reduce_noise(y=audio_16k, sr=16000, y_noise=noise_sample)
+audio_denoised = nr.reduce_noise(y=audio_16k, sr=16000) # first 0.5s as noise profile
 sf.write("outputs/temp_denoised.wav", audio_denoised, 16000)
 denoised_text = model.transcribe("outputs/temp_denoised.wav")["text"].strip()
 print(f"Noise reduced: {denoised_text}")
@@ -57,3 +56,8 @@ with open("outputs/asr_level1_output.txt", "w") as f:
     f.write(f"Noise reduced:   {denoised_text}  (WER: {get_wer(GROUND_TRUTH, denoised_text):.1f}%)\n")
 
 print("saved to outputs/asr_level1_output.txt")
+print("\n===== COMPARISON =====")
+print(f"Baseline WER:        {get_wer(GROUND_TRUTH, baseline_text):.1f}%")
+print(f"Resampled WER:       {get_wer(GROUND_TRUTH, resampled_text):.1f}%")
+print(f"Trimmed WER:         {get_wer(GROUND_TRUTH, trimmed_text):.1f}%")
+print(f"Denoised WER:        {get_wer(GROUND_TRUTH, denoised_text):.1f}%")
