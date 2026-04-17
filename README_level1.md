@@ -22,7 +22,17 @@ The goal of this level is to **compare different preprocessing techniques and an
 src/
 ├── ocr_level1.py
 ├── asr_level1.py
-└── tts_bonus.py
+├── tts_bonus.py
+├── images/
+│   ├── image-1.png
+│   ├── image-2.jpg
+│   ├── image-3.jpg
+│   └── my-image.jpg
+└── audio/
+    ├── audio1.wav
+    ├── audio2.wav
+    ├── audio3.wav
+    └── voice-message.wav
 ```
 
 ---
@@ -50,43 +60,75 @@ We tested 4 preprocessing methods and evaluated results using **Accuracy + Simil
 
 ## OCR Results
 
-```
-Baseline:
-H BELIEVING IN YOURSELF IS THE SECRET TO SUCCESS ——
-Accuracy: ~100.0% (noise affects metric slightly)
-Similarity: 94.8%
+## image-1.png
 
-Grayscale:
-BELIEVING IN YOURSELF IS THE SECRET TO SUCCESS
-Accuracy: 100.0%
+Baseline: BE STRONGER THAN THE CHALLENGE  
+Accuracy: 100.0%  
 Similarity: 100.0%
 
-Threshold:
-BELIEVING IN YOURSELF §S THE SECRET TO SUCCESS
-Accuracy: 87.5%
-Similarity: 97.8%
-
-Resize x2:
-“ . BELIEVING IN YOURSELF IS THE SECRET TO SUCCESS
-Accuracy: 100.0%
-Similarity: 95.8%
-
-Denoised:
-BELIEVING IN YOURSELF IS THE SECRET TO SUCCESS
-Accuracy: 100.0%
+Grayscale: BE STRONGER THAN THE CHALLENGE  
+Accuracy: 100.0%  
 Similarity: 100.0%
-```
+
+Threshold: BE STRONGER THAN THE CHALLENGE  
+Accuracy: 100.0%  
+Similarity: 100.0%
+
+Resize x2: BE STRONGER THAN THE CHALLENGE  
+Accuracy: 100.0%  
+Similarity: 100.0%
+
+Denoised: BE STRONGER THAN THE CHALLENGE  
+Accuracy: 100.0%  
+Similarity: 100.0%
 
 ---
 
-## OCR Observation
+## image-2.jpg
 
-* Grayscale and denoising produced perfect results (100% accuracy and similarity)
-* Thresholding introduced small character distortion (`IS → §S`)
-* Resizing introduced artifacts in this image, affecting readability
-* Baseline already performed relatively well, but contained noise and extra characters
+Baseline:  
+Accuracy: 0.0%  
+Similarity: 0.0%
 
-👉 Conclusion: OCR performance depends strongly on preprocessing, but not all techniques improve results in every case.
+Grayscale:  
+Accuracy: 0.0%  
+Similarity: 0.0%
+
+Threshold:  
+Accuracy: 0.0%  
+Similarity: 0.0%
+
+Resize x2: T0 ae A  
+Accuracy: 16.7%  
+Similarity: 40.0%
+
+Denoised:  
+Accuracy: 0.0%  
+Similarity: 0.0%
+
+---
+
+## image-3.jpg
+
+Baseline: noisy text detected  
+Accuracy: 50.6%  
+Similarity: 3.8%
+
+Grayscale:  
+Accuracy: 50.6%  
+Similarity: 4.1%
+
+Threshold:  
+Accuracy: 49.4%  
+Similarity: 4.4%
+
+Resize x2:  
+Accuracy: 49.4%  
+Similarity: 1.6%
+
+Denoised:  
+Accuracy: 57.3%  
+Similarity: 3.5%
 
 ---
 
@@ -104,44 +146,69 @@ We tested Whisper transcription with different preprocessing techniques.
 
 ## ASR Results
 
-```
-Baseline:
-Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.
+## audio1.wav
+
+Baseline: I'm sorry, but I cannot fix this problem for you.  
 WER: 0.0%
 
-Resampled 16kHz:
-Same output
+Resampled: same output  
 WER: 0.0%
 
-Trimmed silence:
-Same output
+Trimmed: same output  
 WER: 0.0%
-
-Noise reduced:
-I hope you are fine. I hope to see you. Let's start the project.
-WER: 36.8%
-```
 
 ---
 
-## ASR Observation
+## audio2.wav
 
-* Whisper performs extremely well on this clean audio (0% WER baseline)
-* Resampling has no effect because Whisper already expects 16kHz audio
-* Silence trimming does not change results significantly
-* Noise reduction degraded performance because it removed or distorted parts of the speech signal
+Baseline: You have been selected.  
+WER: 0.0%
 
-👉 Conclusion: Whisper is robust to preprocessing, and additional processing does not always improve results.
+Resampled: same output  
+WER: 0.0%
+
+Trimmed: same output  
+WER: 0.0%
+
+---
+
+## audio3.wav
+
+Baseline: You are just a line of code.  
+WER: 0.0%
+
+Resampled: same output  
+WER: 0.0%
+
+Trimmed: same output  
+WER: 0.0%
+
+---
+
+## voice-message.wav
+
+Baseline: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.  
+WER: 0.0%
+
+Resampled: same output  
+WER: 0.0%
+
+Trimmed: same output  
+WER: 0.0%
+
+---
+
+# ASR Observation
+
+- Whisper is very stable on all audio files
+- Preprocessing does not change results for clean audio
+- Only noisy audio would show improvement
 
 ---
 
 # Bonus — Text-to-Speech (TTS)
 
-The extracted OCR text is converted into speech using Google Text-to-Speech (gTTS), generating a playable MP3 file.
-
-```
 outputs/tts_output.mp3
-```
 
 ---
 

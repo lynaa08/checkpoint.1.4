@@ -1,0 +1,52 @@
+
+==============================
+AUDIO: audio1.wav
+Baseline: I'm sorry, but I cannot fix this problem for you.
+Resampled: I'm sorry, but I cannot fix this problem for you.
+Trimmed: I'm sorry, but I cannot fix this problem for you.
+Denoised: I'm sorry, but I cannot fix this problem for you.
+
+==============================
+AUDIO: audio2.wav
+Baseline: You have been selected.
+Resampled: You have been selected.
+Trimmed: You have been selected.
+Denoised: You have been selected.
+
+==============================
+AUDIO: audio3.wav
+Baseline: You are just a line of code.
+Resampled: You are just a line of code.
+Trimmed: You are just a line of code.
+Denoised: You are just a line of code.
+
+==============================
+AUDIO: voice-message.wav
+Baseline: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.
+Resampled: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.
+Trimmed: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.
+Denoised: I hope you are fine. I hope to see you. Let's start the project.
+
+==============================
+AUDIO: audio1.wav
+Baseline: I'm sorry, but I cannot fix this problem for you.
+Resampled: I'm sorry, but I cannot fix this problem for you.
+Trimmed: I'm sorry, but I cannot fix this problem for you.
+
+==============================
+AUDIO: audio2.wav
+Baseline: You have been selected.
+Resampled: You have been selected.
+Trimmed: You have been selected.
+
+==============================
+AUDIO: audio3.wav
+Baseline: You are just a line of code.
+Resampled: You are just a line of code.
+Trimmed: You are just a line of code.
+
+==============================
+AUDIO: voice-message.wav
+Baseline: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.
+Resampled: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.
+Trimmed: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.

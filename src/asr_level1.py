@@ -1,63 +1,82 @@
 import whisper
 import librosa
 import soundfile as sf
-import noisereduce as nr
 from jiwer import wer
+import os
 import re
 
-AUDIO_PATH = r"C:\Users\tassili\Documents\checkpoint.1.4\data\voice-message.wav"
-GROUND_TRUTH = "hi lena how are you i hope you are fine i want to tell you lets start the project"
+# ---------------- PATH ----------------
+AUDIO_FOLDER = r"C:\Users\tassili\Documents\checkpoint.1.4\data\audio"
 
+# ---------------- GROUND TRUTH ----------------
+GROUND_TRUTH = {
+    "audio1.wav": "I'm sorry but I cannot fix this problem for you",
+    "audio2.wav": "You have been selected",
+    "audio3.wav": "You are just a line of code",
+    "voice-message.wav": "Hi Lena how are you I hope you are fine I want to tell you lets start the project"
+}
+
+# ---------------- CLEAN TEXT ----------------
 def clean(text):
     text = text.lower()
     text = re.sub(r"[^\w\s]", "", text)
     return text.strip()
 
+# ---------------- WER ----------------
 def get_wer(reference, hypothesis):
     return wer(clean(reference), clean(hypothesis)) * 100
 
+# ---------------- MODEL ----------------
 model = whisper.load_model("base")
 
-# load audio
-audio, sr = librosa.load(AUDIO_PATH, sr=None, mono=True)
+os.makedirs("outputs", exist_ok=True)
 
-# --- baseline ---
-baseline_text = model.transcribe(AUDIO_PATH)["text"].strip()
-print(f"Baseline: {baseline_text}")
-print(f"WER: {get_wer(GROUND_TRUTH, baseline_text):.1f}%\n")
+# ---------------- MAIN LOOP ----------------
+for file in os.listdir(AUDIO_FOLDER):
+    if not file.endswith(".wav"):
+        continue
 
-# --- resample to 16kHz (whisper's preferred rate) ---
-audio_16k = librosa.resample(audio, orig_sr=sr, target_sr=16000)
-sf.write("outputs/temp_resampled.wav", audio_16k, 16000)
-resampled_text = model.transcribe("outputs/temp_resampled.wav")["text"].strip()
-print(f"Resampled 16kHz: {resampled_text}")
-print(f"WER: {get_wer(GROUND_TRUTH, resampled_text):.1f}%\n")
+    path = os.path.join(AUDIO_FOLDER, file)
 
-# --- trim silence ---
-audio_trimmed, _ = librosa.effects.trim(audio_16k, top_db=20)
-sf.write("outputs/temp_trimmed.wav", audio_trimmed, 16000)
-trimmed_text = model.transcribe("outputs/temp_trimmed.wav")["text"].strip()
-print(f"Trimmed silence: {trimmed_text}")
-print(f"WER: {get_wer(GROUND_TRUTH, trimmed_text):.1f}%\n")
+    print("\n==============================")
+    print("AUDIO:", file)
 
-# --- noise reduction ---
-audio_denoised = nr.reduce_noise(y=audio_16k, sr=16000) # first 0.5s as noise profile
-sf.write("outputs/temp_denoised.wav", audio_denoised, 16000)
-denoised_text = model.transcribe("outputs/temp_denoised.wav")["text"].strip()
-print(f"Noise reduced: {denoised_text}")
-print(f"WER: {get_wer(GROUND_TRUTH, denoised_text):.1f}%\n")
+    if file not in GROUND_TRUTH:
+        print("No ground truth available\n")
+        continue
 
-# save results
-with open("outputs/asr_level1_output.txt", "w") as f:
-    f.write(f"Ground truth:    {GROUND_TRUTH}\n\n")
-    f.write(f"Baseline:        {baseline_text}  (WER: {get_wer(GROUND_TRUTH, baseline_text):.1f}%)\n")
-    f.write(f"Resampled 16kHz: {resampled_text}  (WER: {get_wer(GROUND_TRUTH, resampled_text):.1f}%)\n")
-    f.write(f"Trimmed silence: {trimmed_text}  (WER: {get_wer(GROUND_TRUTH, trimmed_text):.1f}%)\n")
-    f.write(f"Noise reduced:   {denoised_text}  (WER: {get_wer(GROUND_TRUTH, denoised_text):.1f}%)\n")
+    truth = GROUND_TRUTH[file]
 
-print("saved to outputs/asr_level1_output.txt")
-print("\n===== COMPARISON =====")
-print(f"Baseline WER:        {get_wer(GROUND_TRUTH, baseline_text):.1f}%")
-print(f"Resampled WER:       {get_wer(GROUND_TRUTH, resampled_text):.1f}%")
-print(f"Trimmed WER:         {get_wer(GROUND_TRUTH, trimmed_text):.1f}%")
-print(f"Denoised WER:        {get_wer(GROUND_TRUTH, denoised_text):.1f}%")
+    # ---------------- LOAD AUDIO ----------------
+    audio, sr = librosa.load(path, sr=None, mono=True)
+
+    # ---------------- BASELINE ----------------
+    baseline_text = model.transcribe(path)["text"].strip()
+    print(f"Baseline: {baseline_text}")
+    print(f"WER: {get_wer(truth, baseline_text):.1f}%\n")
+
+    # ---------------- RESAMPLE (16kHz) ----------------
+    audio_16k = librosa.resample(audio, orig_sr=sr, target_sr=16000)
+    sf.write("outputs/temp.wav", audio_16k, 16000)
+
+    resampled_text = model.transcribe("outputs/temp.wav")["text"].strip()
+    print(f"Resampled: {resampled_text}")
+    print(f"WER: {get_wer(truth, resampled_text):.1f}%\n")
+
+    # ---------------- TRIM SILENCE ONLY ----------------
+    trimmed_audio, _ = librosa.effects.trim(audio_16k, top_db=25)
+    sf.write("outputs/temp_trim.wav", trimmed_audio, 16000)
+
+    trimmed_text = model.transcribe("outputs/temp_trim.wav")["text"].strip()
+    print(f"Trimmed: {trimmed_text}")
+    print(f"WER: {get_wer(truth, trimmed_text):.1f}%\n")
+
+    # ---------------- SAVE ----------------
+    with open("outputs/asr_output.txt", "a", encoding="utf-8") as f:
+        f.write("\n==============================\n")
+        f.write(f"AUDIO: {file}\n")
+        f.write(f"Baseline: {baseline_text}\n")
+        f.write(f"Resampled: {resampled_text}\n")
+        f.write(f"Trimmed: {trimmed_text}\n")
+
+print("\nSaved to outputs/asr_output.txt")
