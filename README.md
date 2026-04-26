@@ -1,125 +1,166 @@
-# VoiceVision — OCR + ASR Multimedia System
+# 🎓 Smart Classroom Assistant
 
-**OMC AI Section — Checkpoint 1.4 | Level 0**
-
----
-
-## Project Overview
-
-VoiceVision is a multimedia AI system that can:
-
-- **Read text from images** using OCR (Optical Character Recognition)
-- **Transcribe speech from audio** using ASR (Automatic Speech Recognition)
-
-Built entirely with open-source tools and pretrained models.
+**Multimedia Systems Mini Project — Level 2**
+*A fully multimodal note-taking system that reads lecture slides and transcribes spoken audio into structured, summarised notes.*
 
 ---
 
-## Tools & Libraries
+## 📌 What It Does
 
-| Task              | Library                 |
-| ----------------- | ----------------------- |
-| OCR               | Tesseract + pytesseract |
-| OCR (alternative) | EasyOCR                 |
-| ASR               | OpenAI Whisper          |
-| Audio loading     | ffmpeg                  |
-| WER metric        | jiwer                   |
+| Step | Module | Description |
+|------|--------|-------------|
+| 1 | `ocr_level2.py` | Reads text from lecture slide images (Tesseract + OpenCV) |
+| 2 | `asr_level2.py` | Transcribes lecture audio recordings (OpenAI Whisper) |
+| 3 | `combine.py` | Merges OCR + ASR outputs into one structured notes document |
+| 4 | `summarizer.py` | Generates a concise bullet-point summary (Claude LLM) |
+| 5 | `tts_level2.py` | Converts the summary to an audio recap (gTTS / pyttsx3) |
 
 ---
 
-## Project Structure
+## 🗂️ Project Structure
 
 ```
-checkpoint.1.4/
+smart-classroom-assistant/
 ├── data/
-│   ├── my-image.jpg       # test image
-│   └── audio.wav          # test audio
+│   ├── images/          ← place your lecture slide images here
+│   └── audio/           ← place your lecture audio files here
+├── outputs/             ← all generated files appear here
+│   ├── ocr_output.txt
+│   ├── asr_output.txt
+│   ├── combined_notes.txt
+│   ├── summary.txt
+│   └── summary_audio.mp3
 ├── src/
-│   ├── ocr.py             # basic OCR script
-│   ├── asr.py             # basic ASR script
-│   ├── ocr_compare.py     # OCR metrics + EasyOCR comparison
-│   └── asr_compare.py     # ASR metrics (Whisper + WER)
+│   ├── ocr_level2.py    ← OCR pipeline
+│   ├── asr_level2.py    ← ASR pipeline
+│   ├── summarizer.py    ← LLM summariser
+│   ├── tts_level2.py    ← Text-to-Speech
+│   └── combine.py       ← Main pipeline runner
+├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## ▶ How to Run
+## ⚙️ Setup
 
-### Setup
+### 1. Install system dependencies
 
 ```bash
-pip install pytesseract easyocr openai-whisper jiwer
+# Ubuntu / Debian
+sudo apt-get install tesseract-ocr ffmpeg
+
+# macOS
+brew install tesseract ffmpeg
 ```
 
-> Also install [Tesseract](https://github.com/UB-Mannheim/tesseract/wiki) and [ffmpeg](https://www.gyan.dev/ffmpeg/builds/) and add both to PATH.
+### 2. Install Python packages
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Add your data
+
+- Drop slide images (`.png`, `.jpg`) into `data/images/`
+- Drop audio files (`.wav`, `.mp3`) into `data/audio/`
+
+---
+
+## 🚀 Run
+
+**Full pipeline (recommended):**
+```bash
+python src/combine.py
+```
+
+**Custom paths:**
+```bash
+python src/combine.py --images path/to/slides --audio path/to/recordings
+```
+
+**Skip optional steps:**
+```bash
+python src/combine.py --skip-summary   # no LLM call
+python src/combine.py --skip-tts       # no audio output
+```
+
+**Use a smaller/faster Whisper model:**
+```bash
+python src/combine.py --whisper-size tiny
+```
+
+**Run individual modules:**
+```bash
+python src/ocr_level2.py    # OCR only
+python src/asr_level2.py    # ASR only
+python src/summarizer.py    # Summariser test
+python src/tts_level2.py    # TTS test
+```
+
+---
+
+## 🧪 Metrics
 
 ### OCR
-
-```bash
-python src/ocr_compare.py
-```
+| Metric | Description |
+|--------|-------------|
+| Word Accuracy | % of ground-truth words found in extracted text |
+| Char Similarity | SequenceMatcher character-level similarity (%) |
 
 ### ASR
-
-```bash
-python src/asr_compare.py
-```
-
----
-
-## Results & Metrics
-
-### OCR — Image: motivational quote (bold white text on circular background)
-
-| Library   | Word Accuracy                                      |
-| --------- | -------------------------------------------------- |
-| Tesseract | low — struggled with stylized/repeated text        |
-| EasyOCR   | could not test — model download blocked by network |
-
-**Ground truth:** `BELIEVING IN YOURSELF IS THE SECRET TO SUCCESS`
-
-### ASR — Audio: short voice message in English
-
-| Library        | WER  | Accuracy |
-| -------------- | ---- | -------- |
-| Whisper (base) | 0.0% | **100%** |
-
-**Transcript:** _"Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project."_
+| Metric | Description |
+|--------|-------------|
+| WER | Word Error Rate — lower is better |
 
 ---
 
-## Observations
+## 🔧 OCR Preprocessing Pipeline
 
-**OCR — What worked:**
+1. **Grayscale** conversion  
+2. **Upscaling** (if image width < 1000 px)  
+3. **Denoising** (`cv2.fastNlMeansDenoising`)  
+4. **Adaptive thresholding** (handles uneven lighting)  
+5. **Deskewing** (corrects small rotation angles)
 
-- Tesseract can read the text but struggles when text is repeated or overlaid in the image design
-- Plain black text on white background works best for Tesseract
-- EasyOCR handles stylized and artistic text better than Tesseract
+## 🔧 ASR Preprocessing Pipeline
 
-**OCR — What failed:**
-
-- Tesseract gave 0% word accuracy on a motivational image because the text appeared twice in the image layout, causing word-position mismatches during comparison
-- EasyOCR model download failed due to network restrictions — models must be downloaded manually in restricted environments
-
-**ASR — What worked:**
-
-- Whisper achieved 100% accuracy on a clear voice recording with no background noise
-- Whisper handles conversational English very well even without any preprocessing
-
-**ASR — What failed / lessons learned:**
-
-- WER is sensitive to punctuation — `lets` vs `let's` counts as an error even though they sound identical
-- Running on CPU is slow; a GPU would speed things up significantly
-- The FP16 warning on CPU is harmless — Whisper automatically falls back to FP32
+1. **Mono conversion** (merge stereo channels)  
+2. **Resampling** to 16 kHz (Whisper's native rate)  
+3. **Silence trimming** (`librosa.effects.trim`)  
+4. **Noise gate** (zero-out sub-threshold frames)
 
 ---
 
-## Key Takeaways
+## 🛠️ Tools Used
 
-- Whisper is very powerful for clean audio — even the base model gives excellent results
-- Tesseract works best on simple, clean document-style images
-- Always normalize (remove punctuation, lowercase) before computing WER/accuracy metrics
-- ffmpeg is required for Whisper to load audio files
+| Task | Tool |
+|------|------|
+| OCR | Tesseract 5, pytesseract, OpenCV, Pillow |
+| ASR | OpenAI Whisper (base model) |
+| Image Processing | OpenCV, NumPy |
+| Audio Processing | librosa, soundfile |
+| LLM Summarisation | Claude (Anthropic API) |
+| TTS | gTTS / pyttsx3 |
+| ASR Metrics | jiwer (WER) |
+| OCR Metrics | SequenceMatcher |
 
 ---
+
+## ⚠️ Known Failure Cases
+
+**OCR:**
+- Decorative / handwritten fonts are poorly recognised
+- Very dark or low-contrast backgrounds confuse thresholding
+- Overlapping text on busy slide backgrounds
+
+**ASR:**
+- Heavy background noise (music, crowd) degrades accuracy
+- Strong accents may increase WER
+- Very fast speech or overlapping speakers
+
+---
+
+## 👩‍💻 Author
+
+OMC AI Section — Checkpoint 1.4 — Level 2
