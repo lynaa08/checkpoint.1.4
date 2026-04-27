@@ -164,10 +164,10 @@ WER: 0.0%
 Baseline: You have been selected.  
 WER: 0.0%
 
-Resampled: same output  
+Resampled: same output
 WER: 0.0%
 
-Trimmed: same output  
+Trimmed: same output
 WER: 0.0%
 
 ---

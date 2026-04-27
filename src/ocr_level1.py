@@ -4,8 +4,9 @@ from PIL import Image
 import os
 from difflib import SequenceMatcher
 
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 # ---------------- PATH ----------------
-IMAGE_FOLDER = r"C:\Users\tassili\Documents\checkpoint.1.4\data\images"
+IMAGE_FOLDER = r"C:\checkpoint.1.4\data\images"
 
 # ---------------- GROUND TRUTH ----------------
 GROUND_TRUTH = {
