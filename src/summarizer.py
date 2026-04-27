@@ -13,7 +13,7 @@ import urllib.error
 # CONFIG
 # ─────────────────────────────────────────────
 API_URL   = "https://api.anthropic.com/v1/messages"
-MODEL     = "claude-haiku-4-5-20251001"  # fast & cheap for summarisation
+MODEL     = "claude-haiku-4-5-20251001"
 MAX_TOKENS = 512
 
 SUMMARY_FILE = os.path.join(os.path.dirname(__file__), "..", "outputs", "summary.txt")
@@ -35,7 +35,6 @@ def _call_claude(prompt: str) -> str:
         headers={
             "Content-Type": "application/json",
             "anthropic-version": "2023-06-01",
-            # The API key is injected by the Claude.ai environment — no need to hard-code it.
         },
         method="POST",
     )
