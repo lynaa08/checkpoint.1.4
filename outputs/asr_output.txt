@@ -1,0 +1,22 @@
+=== ASR OUTPUT — Smart Classroom Assistant ===
+
+--- audio1.wav ---
+Baseline : I'm sorry, but I cannot fix this problem for you.
+Processed: I'm sorry, but I cannot fix this problem for you.
+Metrics  : {'baseline_wer': 0.0, 'processed_wer': 0.0}
+
+--- audio2.wav ---
+Baseline : You have been selected.
+Processed: You have been selected.
+Metrics  : {'baseline_wer': 0.0, 'processed_wer': 0.0}
+
+--- audio3.wav ---
+Baseline : You are just a line of code.
+Processed: You are just a line of code.
+Metrics  : {'baseline_wer': 0.0, 'processed_wer': 0.0}
+
+--- voice-message.wav ---
+Baseline : Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.
+Processed: Hi, how are you? I hope you are fine. I want to tell you that it's hard to do the project.
+Metrics  : {'baseline_wer': 0.0, 'processed_wer': 31.6}
+
