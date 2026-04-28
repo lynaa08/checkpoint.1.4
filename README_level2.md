@@ -1,11 +1,10 @@
-# 🎓 Smart Classroom Assistant
+#  Smart Classroom Assistant
 
 **Multimedia Systems Mini Project — Level 2**
 *A fully multimodal note-taking system that reads lecture slides and transcribes spoken audio into structured, summarised notes.*
 
 ---
-
-## 📌 What It Does
+##  What It Does
 
 | Step | Module | Description |
 |------|--------|-------------|
@@ -17,7 +16,7 @@
 
 ---
 
-## 🗂️ Project Structure
+## ️ Project Structure
 
 ```
 smart-classroom-assistant/
@@ -42,7 +41,7 @@ smart-classroom-assistant/
 
 ---
 
-## ⚙️ Setup
+##  Setup
 
 ### 1. Install system dependencies
 
@@ -67,7 +66,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🚀 Run
+## Run
 
 **Full pipeline (recommended):**
 ```bash
@@ -100,7 +99,7 @@ python src/tts_level2.py    # TTS test
 
 ---
 
-## 🧪 Metrics
+##  Metrics
 
 ### OCR
 | Metric | Description |
@@ -115,7 +114,7 @@ python src/tts_level2.py    # TTS test
 
 ---
 
-## 🔧 OCR Preprocessing Pipeline
+##  OCR Preprocessing Pipeline
 
 1. **Grayscale** conversion  
 2. **Upscaling** (if image width < 1000 px)  
@@ -123,7 +122,7 @@ python src/tts_level2.py    # TTS test
 4. **Adaptive thresholding** (handles uneven lighting)  
 5. **Deskewing** (corrects small rotation angles)
 
-## 🔧 ASR Preprocessing Pipeline
+##  ASR Preprocessing Pipeline
 
 1. **Mono conversion** (merge stereo channels)  
 2. **Resampling** to 16 kHz (Whisper's native rate)  
@@ -132,7 +131,7 @@ python src/tts_level2.py    # TTS test
 
 ---
 
-## 🛠️ Tools Used
+##  Tools Used
 
 | Task | Tool |
 |------|------|
@@ -147,7 +146,7 @@ python src/tts_level2.py    # TTS test
 
 ---
 
-## ⚠️ Known Failure Cases
+##  Known Failure Cases
 
 **OCR:**
 - Decorative / handwritten fonts are poorly recognised
@@ -161,6 +160,6 @@ python src/tts_level2.py    # TTS test
 
 ---
 
-## 👩‍💻 Author
+##  Author
 
 OMC AI Section — Checkpoint 1.4 — Level 2

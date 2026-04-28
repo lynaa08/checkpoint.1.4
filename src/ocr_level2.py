@@ -34,19 +34,15 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 # ─────────────────────────────────────────────
 def preprocess(img_bgr: np.ndarray) -> np.ndarray:
     """Apply the full preprocessing pipeline to a BGR image."""
-    # 1. Convert to grayscale
     gray = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2GRAY)
 
-    # 2. Upscale if image is small (helps Tesseract a lot)
     h, w = gray.shape
     if w < 1000:
         scale = 1000 / w
         gray = cv2.resize(gray, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
 
-    # 3. Denoise
     gray = cv2.fastNlMeansDenoising(gray, h=10)
 
-    # 4. Adaptive threshold  (handles uneven lighting better than global Otsu)
     binary = cv2.adaptiveThreshold(
         gray, 255,
         cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
@@ -55,7 +51,6 @@ def preprocess(img_bgr: np.ndarray) -> np.ndarray:
         C=10,
     )
 
-    # 5. Deskew
     binary = deskew(binary)
 
     return binary

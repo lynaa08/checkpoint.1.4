@@ -38,10 +38,10 @@ GROUND_TRUTH = {
 def preprocess_audio(path: str, out_path: str, target_sr: int = 16000) -> str:
     """
     Full audio preprocessing pipeline:
-      1. Load and convert to mono
-      2. Resample to 16 kHz (Whisper's native rate)
-      3. Trim leading/trailing silence
-      4. Simple noise gate (zero-out very quiet frames)
+        1. Load and convert to mono
+        2. Resample to 16 kHz (Whisper's native rate)
+        3. Trim leading/trailing silence
+        4. Simple noise gate (zero-out very quiet frames)
     Returns the path of the processed file.
     """
     audio, sr = librosa.load(path, sr=None, mono=True)
