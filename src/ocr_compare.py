@@ -2,7 +2,7 @@ import pytesseract
 import easyocr
 from PIL import Image
 
-IMAGE_PATH = r"C:\Users\tassili\Documents\checkpoint.1.4\data\my-image.jpg"
+IMAGE_PATH = r"C:\Users\tassili\Documents\checkpoint.1.4\data\images\my-image.jpg"
 GROUND_TRUTH = "BELIEVING IN YOURSELF IS THE SECRET TO SUCCESS"
 
 def word_accuracy(reference, hypothesis):

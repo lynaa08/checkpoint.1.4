@@ -2,7 +2,7 @@ import whisper
 from jiwer import wer
 import re
 
-AUDIO_PATH = r"C:\Users\tassili\Documents\checkpoint.1.4\data\voice-message.wav"
+AUDIO_PATH = r"C:\Users\tassili\Documents\checkpoint.1.4\data\audio/voice-message.wav"
 GROUND_TRUTH = "hi lena how are you i hope you are fine i want to tell you lets start the project"
 
 def clean(text):

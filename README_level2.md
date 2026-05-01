@@ -21,9 +21,9 @@
 ```
 smart-classroom-assistant/
 ├── data/
-│   ├── images/          ← place your lecture slide images here
-│   └── audio/           ← place your lecture audio files here
-├── outputs/             ← all generated files appear here
+│   ├── images/         
+│   └── audio/           
+├── outputs/             
 │   ├── ocr_output.txt
 │   ├── asr_output.txt
 │   ├── combined_notes.txt

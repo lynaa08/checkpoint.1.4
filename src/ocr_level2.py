@@ -17,7 +17,7 @@ from difflib import SequenceMatcher
 IMAGE_FOLDER = os.path.join(os.path.dirname(__file__), "..", "data", "images")
 OUTPUT_FILE  = os.path.join(os.path.dirname(__file__), "..", "outputs", "ocr_output.txt")
 
-# Optional ground truth for accuracy metrics (add your own)
+# Optional ground truth for accuracy metrics 
 GROUND_TRUTH = {
     "image-1.png": "BE STRONGER THAN THE CHALLENGE",
     "image-2.jpg": "IT'S OK TO TAKE A BREAK",
