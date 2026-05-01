@@ -44,7 +44,7 @@ checkpoint.1.4/
 
 ---
 
-## ▶ How to Run
+##  How to Run
 
 ### Setup
 
