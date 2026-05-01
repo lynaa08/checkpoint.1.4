@@ -4,9 +4,9 @@ import soundfile as sf
 from jiwer import wer
 import os
 import re
-os.environ["PATH"] += os.pathsep + r"C:\Users\HP\Downloads\ffmpeg-tools-2025-01-01-git-d3aa99a4f4\ffmpeg-tools-2025-01-01-git-d3aa99a4f4\bin"
+
 # ---------------- PATH ----------------
-AUDIO_FOLDER = r"C:\checkpoint.1.4\data\audio"
+AUDIO_FOLDER = r"C:\Users\tassili\Documents\checkpoint.1.4\data\audio"
 
 # ---------------- GROUND TRUTH ----------------
 GROUND_TRUTH = {

@@ -1,5 +1,5 @@
 """
-combine.py  —  Smart Classroom Assistant  🎓
+combine.py  —  Smart Classroom Assistant  
 Level 2 Multimodal Note-Taking System
 
 Pipeline:

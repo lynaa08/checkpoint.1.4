@@ -1,6 +1,0 @@
-Ground truth:    hi lena how are you i hope you are fine i want to tell you lets start the project
-
-Baseline:        Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.  (WER: 0.0%)
-Resampled 16kHz: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.  (WER: 0.0%)
-Trimmed silence: Hi Lena, how are you? I hope you are fine. I want to tell you let's start the project.  (WER: 0.0%)
-Noise reduced:   I hope you are fine. I hope to see you. Let's start the project.  (WER: 36.8%)
